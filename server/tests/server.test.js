@@ -32,4 +32,27 @@ describe('POST /todos', () => {
           .catch(e => done(e));
       });
   });
+
+  it('should not create toDo with invalid body data', done => {
+    //post request
+    //send empty objects - which should be invalid
+    //expect 400
+    //check fo rerrors
+    //same todo.find length is going to be 0
+    request(app)
+      .post('/todos')
+      .send({})
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        Todo.find()
+          .then(todos => {
+            expect(todos.length).toBe(0);
+            done();
+          })
+          .catch(e => done(e));
+      });
+  });
 });
