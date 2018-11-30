@@ -9,7 +9,7 @@ MongoClient.connect(
     console.log('Connected to MongoDB server');
 
     db.collection('Users')
-      .findOneAndDelete({ _id: new ObjectID('5bf5517de39f8b2829d7d5cb') })
+      .findOneAndDelete({ _id: ObjectID('5c013eaebd2f2d324313feb6') })
       .then(result => {
         console.log(result);
       });
