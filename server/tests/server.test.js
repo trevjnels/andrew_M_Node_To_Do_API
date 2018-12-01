@@ -1,10 +1,20 @@
 const expect = require('expect');
 const request = require('supertest');
+const { ObjectID } = require('mongodb');
 
 const { app } = require('./../server');
 const { Todo } = require('./../models/todo');
 
-const dummytodos = [{ text: 'first test todo' }, { text: 'second test todo' }];
+const dummytodos = [
+  {
+    _id: new ObjectID(),
+    text: 'first test todo'
+  },
+  {
+    _id: new ObjectID(),
+    text: 'second test todo'
+  }
+];
 
 beforeEach(done => {
   Todo.remove({})
@@ -75,5 +85,37 @@ describe('GET /todos', () => {
     //you do not need a full end function with a err, res as this is not
     //an async function.
     //request is apart of supertest
+  });
+});
+
+describe('GET /todos:id', () => {
+  it('should return todo doc', done => {
+    request(app)
+      .get(`/todos/${dummytodos[0]._id.toHexString()}`)
+      .expect(200)
+      .expect(res => {
+        expect(res.body.todo.text).toBe(dummytodos[0].text);
+      })
+      .end(done);
+  });
+  it('should return 404 if todo not found', done => {
+    var hexId = new ObjectID().toHexString();
+    request(app)
+      .get(`/todos/${hexId}`)
+      .expect(404)
+      //make a req using real ObjectID
+      //call tohexstring method
+      //newobjectID will be called
+      //wont be found in the collection.
+      //expect status code is 404
+      .end(done);
+  });
+  it('should return 404 for non-object ids', done => {
+    //pass in a url /todos/123
+    //expect 404 will be status code
+    request(app)
+      .get('/todos/123')
+      .expect(404)
+      .end(done);
   });
 });

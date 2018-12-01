@@ -28,20 +28,20 @@ app.post('/users', (req, res) => {
   );
 });
 
-// app.post('/todos', (req, res) => {
-//   var todo = new Todo({
-//     text: req.body.text
-//   });
-//   todo.save().then(
-//     doc => {
-//       res.send(doc);
-//       //automattically asigned status of 200 here
-//     },
-//     e => {
-//       res.status(400).send(e);
-//     }
-//   );
-// });
+app.post('/todos', (req, res) => {
+  var todo = new Todo({
+    text: req.body.text
+  });
+  todo.save().then(
+    doc => {
+      res.send(doc);
+      //automattically asigned status of 200 here
+    },
+    e => {
+      res.status(400).send(e);
+    }
+  );
+});
 //post creates a resource
 
 app.get('/todos', (req, res) => {
@@ -68,24 +68,21 @@ app.get(`/todos/:id`, (req, res) => {
   //
   //
   if (!ObjectID.isValid(id)) {
-    dot();
     res.status(404).send();
-    return console.log('Major Error: todoID not valid  => ', id);
+    //return console.log('Major Error: todoID not valid  => ', id);
   } else {
     Todo.findById(id)
       .then(todo => {
-        dot();
         if (!todo) {
           res.status(404).send();
-          return console.log('Error user not found!  =>  ', id);
+          //return console.log('Error user not found!  =>  ', id);
         }
         res.send({ todo });
-        console.log(todo);
       })
 
       .catch(e => {
         res.status(400).send();
-        return console.log(JSON.stringify(e, undefined, 2));
+        //return console.log(JSON.stringify(e, undefined, 2));
       });
   }
 });
