@@ -26,6 +26,24 @@ app.post('/todos', (req, res) => {
 });
 //post creates a resource
 
+app.get('/todos', (req, res) => {
+  Todo.find().then(
+    todos => {
+      res.send({
+        todos
+        //you could just send the array back here but then you cant ad visiable properties
+        // by making this an object with the first entry todos: [todos] we allow for other
+        //properties example:
+        //code: '400',
+        //user: 'tnelson'
+      });
+    },
+    e => {
+      res.status(400).sed(e);
+    }
+  );
+});
+
 app.listen(3000, () => {
   console.log('started on port 3000');
 });
