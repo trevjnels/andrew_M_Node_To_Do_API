@@ -10,11 +10,11 @@ var app = express();
 
 app.use(bodyParser.json());
 
-app.post('/todos', (req, res) => {
-  var todo = new Todo({
-    text: req.body.text
+app.post('/users', (req, res) => {
+  var user = new User({
+    email: req.body.email
   });
-  todo.save().then(
+  user.save().then(
     doc => {
       res.send(doc);
       //automattically asigned status of 200 here
@@ -24,6 +24,21 @@ app.post('/todos', (req, res) => {
     }
   );
 });
+
+// app.post('/todos', (req, res) => {
+//   var todo = new Todo({
+//     text: req.body.text
+//   });
+//   todo.save().then(
+//     doc => {
+//       res.send(doc);
+//       //automattically asigned status of 200 here
+//     },
+//     e => {
+//       res.status(400).send(e);
+//     }
+//   );
+// });
 //post creates a resource
 
 app.get('/todos', (req, res) => {
