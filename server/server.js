@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const { ObjectID } = require('mongodb');
 
 //local imports below, librarys above
 var { mongoose } = require('./db/mongoose');
@@ -9,7 +10,9 @@ var { User } = require('./models/user');
 var app = express();
 
 app.use(bodyParser.json());
-
+var dot = () => {
+  console.log('- - - - - - - - - - - - - - - - - - - -');
+};
 app.post('/users', (req, res) => {
   var user = new User({
     email: req.body.email
@@ -54,9 +57,37 @@ app.get('/todos', (req, res) => {
       });
     },
     e => {
-      res.status(400).sed(e);
+      res.status(400).send(e);
     }
   );
+});
+
+//GET / todos/12329493034 (id)
+app.get(`/todos/:id`, (req, res) => {
+  var id = req.params.id;
+  //
+  //
+  if (!ObjectID.isValid(id)) {
+    dot();
+    res.status(404).send();
+    return console.log('Major Error: todoID not valid  => ', id);
+  } else {
+    Todo.findById(id)
+      .then(todo => {
+        dot();
+        if (!todo) {
+          res.status(404).send();
+          return console.log('Error user not found!  =>  ', id);
+        }
+        res.send({ todo });
+        console.log(todo);
+      })
+
+      .catch(e => {
+        res.status(400).send();
+        return console.log(JSON.stringify(e, undefined, 2));
+      });
+  }
 });
 
 app.listen(3000, () => {
