@@ -88,11 +88,43 @@ app.get(`/todos/:id`, (req, res) => {
   }
 });
 
+app.delete(`/todos/:id`, (req, res) => {
+  var id = req.params.id;
+
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+  Todo.findByIdAndRemove(id)
+    .then(todo => {
+      if (!todo) {
+        res.status(404).send();
+      } else if (todo === null) {
+        res.status(404).send();
+      } else {
+        res.send({ todo });
+      }
+    })
+    .catch(e => {
+      res.status(400).send();
+    });
+});
+
+//get the ID like we do on line 68
+//validate the ID -> return 404
+//remove todBY // // ID
+//sucess - todo was delted
+//if no doc comes back send 404 (null)
+//if(doc) send back 200.
+//app.delete will still trigger a sucess case even if
+//the todo has already been deleted.
+//error (400) - empty body
+
 app.listen(port, () => {
   console.log(`started on port ${port}`);
 });
 
 module.exports = { app };
+
 //-----------------------notes and old code below this line---------
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //----------------------------------------------------------------------
