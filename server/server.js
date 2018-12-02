@@ -1,20 +1,21 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-const { ObjectID } = require('mongodb');
+const _ = require("lodash");
+const express = require("express");
+const bodyParser = require("body-parser");
+const { ObjectID } = require("mongodb");
 
 //local imports below, librarys above
-var { mongoose } = require('./db/mongoose');
-var { Todo } = require('./models/todo');
-var { User } = require('./models/user');
+var { mongoose } = require("./db/mongoose");
+var { Todo } = require("./models/todo");
+var { User } = require("./models/user");
 
 var app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 var dot = () => {
-  console.log('- - - - - - - - - - - - - - - - - - - -');
+  console.log("- - - - - - - - - - - - - - - - - - - -");
 };
-app.post('/users', (req, res) => {
+app.post("/users", (req, res) => {
   var user = new User({
     email: req.body.email
   });
@@ -29,7 +30,7 @@ app.post('/users', (req, res) => {
   );
 });
 
-app.post('/todos', (req, res) => {
+app.post("/todos", (req, res) => {
   var todo = new Todo({
     text: req.body.text
   });
@@ -45,7 +46,7 @@ app.post('/todos', (req, res) => {
 });
 //post creates a resource
 
-app.get('/todos', (req, res) => {
+app.get("/todos", (req, res) => {
   Todo.find().then(
     todos => {
       res.send({
@@ -95,6 +96,48 @@ app.delete(`/todos/:id`, (req, res) => {
     return res.status(404).send();
   }
   Todo.findByIdAndRemove(id)
+    .then(todo => {
+      if (!todo) {
+        return res.status(404).send();
+      }
+      res.send({ todo });
+    })
+    .catch(e => {
+      res.status(400).send();
+    });
+});
+
+//patch updates
+app.patch(`/todos/:id`, (req, res) => {
+  var id = req.params.id;
+
+  var body = _.pick(req.body, ["text", "completed"]);
+  //^this is the reason we installed lodash without lodash we can send along properties
+  //to update that are not even on the object or that we (th user) are not supposed to updates
+  //completed at would be a good example of a param. This allows us to set
+  //the only two properties we want the usuer to updates
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+  //checking completed value and using that value to set compelted at
+  if (_.isBoolean(body.completed) && body.completed) {
+    //if it is boolean and its true
+    body.completedAt = new Date().getTime();
+    //gettime returns a JS timestamp. This is the number of miliseconds
+    //since midnight at january 1st 1970 (unix epic)
+  } else {
+    //not true or not boolean
+    body.completed = false;
+    body.completedAt = null;
+    //if you want to clear a value from the database set it to null
+  }
+
+  Todo.findByIdAndUpdate(
+    id,
+    { $set: body /*mongodb operator*/ },
+    { new: true /*mongoose operator*/ }
+  )
     .then(todo => {
       if (!todo) {
         return res.status(404).send();

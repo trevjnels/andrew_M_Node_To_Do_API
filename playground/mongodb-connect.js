@@ -22,31 +22,31 @@
 //     );
 //     db.close();
 //   }
-// );
+// );//
 //first arugment is string - url where database lives
 //second arg is a callback - fire after connection has suceeded or failed.
 //if fails program stops, if suceeds will manipulate the database.
 
 //const MongoClient = require('mongodb').MongoClient;
-const { MongoClient, ObjectID } = require('mongodb');
+const { MongoClient, ObjectID } = require("mongodb");
 
 MongoClient.connect(
-  'mongodb://localhost:27017/TodoApp',
+  "mongodb://localhost:27017/TodoApp",
   (err, db) => {
     if (err) {
-      return console.log('Unable to connect to databse server');
+      return console.log("Unable to connect to databse server");
     }
-    console.log('Connected to MongoDB server');
+    console.log("Connected to MongoDB server");
 
-    db.collection('Users').insertOne(
+    db.collection("Users").insertOne(
       {
-        name: 'kadie',
-        age: '21',
-        location: 'ct'
+        name: "kadie",
+        age: "21",
+        location: "ct"
       },
       (err, result) => {
         if (err) {
-          return console.log('Unable to insert new User', err);
+          return console.log("Unable to insert new User", err);
         }
         console.log(result.ops[0]._id.getTimestamp());
 

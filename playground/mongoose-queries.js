@@ -1,17 +1,17 @@
-const { ObjectID } = require('mongodb');
+const { ObjectID } = require("mongodb");
 // going to use the ObjectID.isValid() method to ensure that jthe id
 //we pass in below is kosher
 
-const { mongoose } = require('./../server/db/mongoose');
-const { Todo } = require('./../server/models/todo');
-const { User } = require('./../server/models/user');
-
+const { mongoose } = require("./../server/db/mongoose");
+const { Todo } = require("./../server/models/todo");
+const { User } = require("./../server/models/user");
+//
 // var id = '5c027d03b271f1ef3d93f48811';
 // //this id is from the first id in a todo list I made. will not work later. I pulled
 // //THis from robomongo
 //
 var dot = () => {
-  console.log('- - - - - - - - - - - - - - - - - - - -');
+  console.log("- - - - - - - - - - - - - - - - - - - -");
 };
 //
 // if (!ObjectID.isValid(id)) {
@@ -67,18 +67,18 @@ var dot = () => {
 //1 user not found
 //2 user was found
 // errors
-const userID = '5c02cd40c382fbc643373bb6'; //6
+const userID = "5c02cd40c382fbc643373bb6"; //6
 if (!ObjectID.isValid(userID)) {
   dot();
-  return console.log('Major Error: userID not valid  => ', userID);
+  return console.log("Major Error: userID not valid  => ", userID);
 } else {
   User.findById(userID)
     .then(user => {
       dot();
       if (!user) {
-        return console.log('Error user not found!  =>  ', userID);
+        return console.log("Error user not found!  =>  ", userID);
       }
-      console.log('user by ID: ', JSON.stringify(user, undefined, 2));
+      console.log("user by ID: ", JSON.stringify(user, undefined, 2));
     })
     .catch(e => console.log(e));
 }

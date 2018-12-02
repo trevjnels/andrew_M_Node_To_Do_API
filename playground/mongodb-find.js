@@ -1,13 +1,14 @@
 //const MongoClient = require('mongodb').MongoClient;
-const { MongoClient, ObjectID } = require('mongodb');
+const { MongoClient, ObjectID } = require("mongodb");
 
 MongoClient.connect(
-  'mongodb://localhost:27017/TodoApp',
+  "mongodb://localhost:27017/TodoApp",
   (err, db) => {
     if (err) {
-      return console.log('Unable to connect to databse server');
+      return console.log("Unable to connect to databse server");
     }
-    console.log('Connected to MongoDB server');
+    //
+    console.log("Connected to MongoDB server");
     // db.collection('ToDos')
     //   .find()
     //   //i used .filter on docs in the JSON.stringify line to obtain the
@@ -69,19 +70,19 @@ MongoClient.connect(
     //to array returns a promimse
     //db.close()
 
-    db.collection('Users')
-      .find({ name: 'Trevor Nelson' })
+    db.collection("Users")
+      .find({ name: "Trevor Nelson" })
       .toArray()
       .then(
         docs => {
           if (docs.length < 1) {
-            return console.log('No records exist by that name');
+            return console.log("No records exist by that name");
           }
-          console.log('kadie records');
+          console.log("kadie records");
           console.log(JSON.stringify(docs, undefined, 2));
         },
         err => {
-          console.log('unable to fetch Users', err);
+          console.log("unable to fetch Users", err);
         }
       );
   }
