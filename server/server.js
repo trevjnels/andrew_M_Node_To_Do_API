@@ -161,6 +161,36 @@ app.patch(`/todos/:id`, (req, res) => {
 //the todo has already been deleted.
 //error (400) - empty body
 
+//POST call /users
+
+app.post("/users", (req, res) => {
+  var user = _.pick(req.body, ["email", "password"]);
+  user.save().then(
+    doc => {
+      res.send(doc);
+    },
+    e => {
+      res.status(400).send(e);
+    }
+  );
+});
+
+//use lodash pick for this like in app.patch('todos/"id"')
+// app.post("/todos", (req, res) => {
+//   var todo = new Todo({
+//     text: req.body.text
+//   });
+//   todo.save().then(
+//     doc => {
+//       res.send(doc);
+//       //automattically asigned status of 200 here
+//     },
+//     e => {
+//       res.status(400).send(e);
+//     }
+//   );
+// });
+
 app.listen(port, () => {
   console.log(`started on port ${port}`);
 });
