@@ -17,20 +17,6 @@ app.use(bodyParser.json());
 var dot = () => {
   console.log("- - - - - - - - - - - - - - - - - - - -");
 };
-app.post("/users", (req, res) => {
-  var user = new User({
-    email: req.body.email
-  });
-  user.save().then(
-    doc => {
-      res.send(doc);
-      //automattically asigned status of 200 here
-    },
-    e => {
-      res.status(400).send(e);
-    }
-  );
-});
 
 app.post("/todos", (req, res) => {
   var todo = new Todo({
