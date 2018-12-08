@@ -165,15 +165,20 @@ app.patch(`/todos/:id`, (req, res) => {
 
 app.post("/users", (req, res) => {
   var body = _.pick(req.body, ["email", "password"]);
+  // var body = {
+  //   email: req.body.email,
+  //   password: req.body.password
+  // };
   var user = new User(body);
-  user.save().then(
-    doc => {
-      res.send(doc);
-    },
-    e => {
+  console.log(user);
+  user
+    .save()
+    .then(user => {
+      res.send(user);
+    })
+    .catch(e => {
       res.status(400).send(e);
-    }
-  );
+    });
 });
 
 //use lodash pick for this like in app.patch('todos/"id"')
