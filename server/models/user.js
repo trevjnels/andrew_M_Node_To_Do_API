@@ -18,7 +18,7 @@ var User = mongoose.model("User", {
     trim: true,
     unique: true, // verifies that the email is not already in use (false is default value)
     validate: {
-      validator: validator.isEmail(value),
+      validator: validator.isEmail,
       message: "this is not a valid email"
     }
   },
