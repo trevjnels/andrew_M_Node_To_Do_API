@@ -164,13 +164,12 @@ app.patch(`/todos/:id`, (req, res) => {
 //POST call /users
 
 app.post("/users", (req, res) => {
-  var body = _.pick(req.body, ["password", "email"]);
-  // var body = {
+  var body = _.pick(req.body, ["email", "password"]);
+  var user = new User(body);
+  // var user = new User({
   //   email: req.body.email,
   //   password: req.body.password
-  // };
-  var user = new User(body);
-  console.log(user);
+  // });
   user
     .save()
     .then(user => {
