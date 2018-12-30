@@ -156,10 +156,18 @@ app.post("/users", (req, res) => {
   //   email: req.body.email,
   //   password: req.body.password
   // });
+
+  // User is a models
+  // user is an instance
+
   user
     .save()
-    .then(user => {
-      res.send(user);
+    .then(() => {
+      return user.generateAuthToken();
+    })
+    .then(token => {
+      res.header("x-auth", token).send(user);
+      //headers that start with x- are custom headers in jwt
     })
     .catch(e => {
       res.status(400).send(e);

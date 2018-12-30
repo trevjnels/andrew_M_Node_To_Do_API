@@ -1,3 +1,9 @@
+//first thing you need to do is to connect to mongodb in the terminal
+// do so by finding /Users/trevornelson/mongo/bin and typing in terminal
+// ./mongod --dbpath ~/mongo-data/
+// this turns the thing on and connects to the mongo-data/ folder to
+//use as the db folder. Obciously the path argument is going to changed
+
 // const MongoClient = require('mongodb').MongoClient;
 //
 // MongoClient.connect(
