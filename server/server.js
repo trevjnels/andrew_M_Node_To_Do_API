@@ -4,6 +4,7 @@ const _ = require("lodash");
 const express = require("express");
 const bodyParser = require("body-parser");
 const { ObjectID } = require("mongodb");
+const bcrypt = require("bcryptjs");
 
 //local imports below, librarys above
 var { mongoose } = require("./db/mongoose");
@@ -178,6 +179,57 @@ app.post("/users", (req, res) => {
 app.get("/users/me", authenticate, (req, res) => {
   res.send(req.user);
 });
+
+app.post("/users/login", (req, res) => {
+  var body = _.pick(req.body, ["email", "password"]);
+  //see if email is in the DB
+
+  User.findByCredentials(body.email, body.password)
+    .then(user => {
+      //create new token
+      return user.generateAuthToken().then(token => {
+        res.header("x-auth", token).send(user);
+      });
+    })
+    .catch(e => {
+      res.status(400).send();
+    });
+});
+//
+//bad code below - - - - - - - - - - - - - - - -
+// User.find({ email: body.email }).then(user => {
+//   var passwordCorrect = bcrypt
+//     .compare(body.password, user[0].password, (err, res) => {
+//       res.send(true);
+//     })
+//     .then(res.send(user))
+//
+//     //  if(passwordCorrect){
+//     //   console.log("still true bro");
+//     // }
+//
+//     .catch(e => {
+//       res.status(404).send("User not found", e);
+//     });
+// bcrypt.compare(password, user.password, (err, res) => {
+//   res.send({ email: email, password: password });
+//bad code above - - - - - - - - - - - - - - - -
+//
+
+//
+
+// if (User.find({ email })) {
+//
+// } else {
+//   res.status(404).send("Error: user not found");
+// }
+
+// if email is in db, compare password to db(hashedPassword) using bcrypt.compare
+//if fail return error -password is wrong
+//if correct res.send user modle with email & pword
+
+//hashed password = plain text password bcrypt.compare
+
 //use lodash pick for this like in app.patch('todos/"id"')
 // app.post("/todos", (req, res) => {
 //   var todo = new Todo({
