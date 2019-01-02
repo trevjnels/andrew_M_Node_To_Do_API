@@ -302,7 +302,7 @@ describe("POST /user/login", () => {
         }
         User.findById(users[1]._id)
           .then(user => {
-            console.log(user);
+            //console.log(user);
             expect(user.tokens.length).toBe(0);
             done();
           })

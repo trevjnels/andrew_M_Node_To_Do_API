@@ -58,6 +58,19 @@ UserSchema.methods.generateAuthToken = function() {
     return token;
   });
 };
+
+UserSchema.methods.removeToken = function(token) {
+  var user = this;
+
+  return user.update({
+    //pull is a mongodb operator
+    $pull: {
+      tokens: {
+        token: token
+      }
+    }
+  });
+};
 //.statics kind of like UserSchema.methods everything is a model method as opposed to instance
 //method
 
