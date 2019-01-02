@@ -20,7 +20,7 @@ const users = [
   },
   {
     _id: userTwoId,
-    email: "Jen@example.com",
+    email: "jen@example.com",
     password: "userTwoPass"
   }
 ];

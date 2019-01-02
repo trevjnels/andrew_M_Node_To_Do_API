@@ -153,7 +153,9 @@ app.patch(`/todos/:id`, (req, res) => {
 
 app.post("/users", (req, res) => {
   var body = _.pick(req.body, ["email", "password"]);
+  body.email = body.email.toLowerCase();
   var user = new User(body);
+
   // var user = new User({
   //   email: req.body.email,
   //   password: req.body.password
@@ -183,6 +185,7 @@ app.get("/users/me", authenticate, (req, res) => {
 app.post("/users/login", (req, res) => {
   var body = _.pick(req.body, ["email", "password"]);
   //see if email is in the DB
+  body.email = body.email.toLowerCase();
 
   User.findByCredentials(body.email, body.password)
     .then(user => {
