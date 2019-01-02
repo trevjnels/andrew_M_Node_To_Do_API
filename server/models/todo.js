@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
-var Todo = mongoose.model('Todo', {
+var Todo = mongoose.model("Todo", {
   //this obj defines the properties of each storage objects
   text: {
     type: String,
@@ -16,6 +16,10 @@ var Todo = mongoose.model('Todo', {
   completedAt: {
     type: Number,
     default: null
+  },
+  _creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
   //dont need the created at added in here because the timestamp has
   //this buit into the ObjectID property (first 4 digets)
