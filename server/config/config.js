@@ -11,6 +11,10 @@ if (env === "development" || env === "test") {
   });
 }
 
+//
+// var badDates = [
+// '1/2', '1/21', '1/31', "2/8", '2/18', '2/20'
+// ]
 // if (env === "development") {
 //   process.env.PORT = 3000;
 //   process.env.MONGODB_URI = "mongodb://localhost:27017/TodoApp";
